@@ -7,10 +7,11 @@
 //
 
 import UIKit
-import Foundation
+import AVFoundation
+
 
 class ViewController: UIViewController {
-        
+    var player: AVAudioPlayer!
     let softTime = 5
     let mediumTime = 7
     let hardTime = 12
@@ -35,7 +36,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var Label: UILabel!
     
-    
+    @IBOutlet weak var myProgressBar: UIProgressView!
     
     @IBAction func hardnessSelected(_ sender: UIButton) {
         let hardness = sender.currentTitle!
@@ -45,6 +46,7 @@ class ViewController: UIViewController {
 //        print(eggTimes[hardness]!)
 //        print("after dic")
         timer.invalidate()
+        
         
         switch hardness{
             
@@ -71,6 +73,9 @@ class ViewController: UIViewController {
         if (hardness == "Hard"){
             print(eggTimes["Hard"]!)
         }
+        let totalSeconds = secondsRemaining
+        
+        self.myProgressBar.progress = 0.0
         
         
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
@@ -78,12 +83,20 @@ class ViewController: UIViewController {
                  print ("\(self.secondsRemaining) seconds")
                  self.secondsRemaining -= 1
                  self.Label.text = "fuck you, there are "+String(self.secondsRemaining) + " seconds left"
+                 self.myProgressBar.progress = (Float(totalSeconds-self.secondsRemaining))/Float(totalSeconds)
              } else {
                  Timer.invalidate()
                  self.Label.text = "fuck you"
+                 self.playSound()
              }
          }
         
     }
-    
+    func playSound() {
+        let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
+        player = try! AVAudioPlayer(contentsOf: url!)
+        player.play()
+        //print(note)
+                
+    }
 }
