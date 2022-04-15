@@ -14,11 +14,13 @@ class ViewController: UIViewController {
     let softTime = 5
     let mediumTime = 7
     let hardTime = 12
-    let eggTimes = ["Soft" : 300, "Medium" : 420, "Hard" : 720]
+//    let eggTimes = ["Soft" : 300, "Medium" : 420, "Hard" : 720]
+    let eggTimes = ["Soft" : 3, "Medium" : 6, "Hard" : 10 ]
     var secondsRemaining = 30
     
 
-
+    var timer =  Timer()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +33,9 @@ class ViewController: UIViewController {
     }
 
 
+    @IBOutlet weak var Label: UILabel!
+    
+    
     
     @IBAction func hardnessSelected(_ sender: UIButton) {
         let hardness = sender.currentTitle!
@@ -39,7 +44,7 @@ class ViewController: UIViewController {
 //        print("before dic")
 //        print(eggTimes[hardness]!)
 //        print("after dic")
-        
+        timer.invalidate()
         
         switch hardness{
             
@@ -68,12 +73,14 @@ class ViewController: UIViewController {
         }
         
         
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
              if self.secondsRemaining > 0 {
                  print ("\(self.secondsRemaining) seconds")
                  self.secondsRemaining -= 1
+                 self.Label.text = "fuck you, there are "+String(self.secondsRemaining) + " seconds left"
              } else {
                  Timer.invalidate()
+                 self.Label.text = "fuck you"
              }
          }
         
